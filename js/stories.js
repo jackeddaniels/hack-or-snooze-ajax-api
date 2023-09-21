@@ -35,7 +35,7 @@ function generateStoryMarkup(story) {
     `);
 }
 
-function submitNewStory(){
+function submitNewStory() {
   //gets form data
   //calls add story
   //puts story on page

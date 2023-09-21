@@ -13,7 +13,7 @@ const $submitStoryForm = $("#submit-story-form");
 
 const $navLogin = $("#nav-login");
 const $navUserProfile = $("#nav-user-profile");
-const $navSubmit = $("#nav-submit")
+const $navSubmit = $("#nav-submit");
 const $navLogOut = $("#nav-logout");
 
 /** To make it easier for individual components to show just themselves, this

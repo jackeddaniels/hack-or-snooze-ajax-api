@@ -86,7 +86,7 @@ class StoryList {
         title: newStory.title,
         url: newStory.url
       }
-    }
+    };
     console.log(body);
 
     const response = await fetch(`${BASE_URL}/stories`, {
@@ -97,7 +97,7 @@ class StoryList {
       }
     });
     const storyData = await response.json();
-    const {story} = storyData;
+    const { story } = storyData;
     // return new Story with
     // { storyId, title, author, url, username, createdAt }
     return new Story(
@@ -108,7 +108,7 @@ class StoryList {
         url: story.url,
         username: story.username,
         createdAt: story.createdAt
-      })
+      });
   }
 }
 
