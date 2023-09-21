@@ -76,3 +76,14 @@ function putStoriesOnPage() {
 
   $allStoriesList.show();
 }
+
+function putFavoriteStoriesOnPage() {
+  $allStoriesList.empty();
+  const favoriteStories = currentUser.favorites;
+
+  for (let story of favoriteStories) {
+    const $story = generateStoryMarkup(story);
+    $allStoriesList.append($story);
+  }
+  $allStoriesList.show();
+}

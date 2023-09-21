@@ -14,13 +14,21 @@ function navAllStories(evt) {
 }
 
 $body.on("click", "#nav-all", navAllStories);
-
+/**Show or hide form on submit click*/
 function navSubmitStoryClick(evt) {
   evt.preventDefault();
   $submitStoryForm.toggleClass("hidden");
 }
 
 $navSubmit.on("click", navSubmitStoryClick);
+
+/**Clicked on Navbar Favorites */
+function navFavoriteClick(evt) {
+  evt.preventDefault();
+  putFavoriteStoriesOnPage();
+}
+
+$navFavorites.on("click", navFavoriteClick);
 
 /** Show login/signup on click on "login" */
 

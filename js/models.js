@@ -243,8 +243,32 @@ class User {
   async addFavorite(story) {
     //add
     this.favorites.unshift(story);
-
+    const response = await fetch(`${BASE_URL}/users/${this.username}/favorites/${story.storyId}`, {
+      method: "POST",
+      body: JSON.stringify({ "token": this.loginToken }),
+      headers: {
+        "content-type": "application/json",
+      }
+    });
   }
 
-  //method for un-favoriting needed
+  /**Removes story from the favorite list and updates API */
+  async deleteFavorite(story) {
+    //TODO: find story in favorites, remove
+    let index;
+    for (let i = 0; i < this.favorites.length; i++) {
+      if (this.favorites[i].storyId === story.storyId) {
+        index = i;
+      }
+    }
+    this.favorites.splice(index, 1);
+
+    const response = await fetch(`${BASE_URL}/users/${this.username}/favorites/${story.storyId}`, {
+      method: "DELETE",
+      body: JSON.stringify({ "token": this.loginToken }),
+      headers: {
+        "content-type": "application/json",
+      }
+    });
+  }
 }
