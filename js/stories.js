@@ -34,21 +34,26 @@ function generateStoryMarkup(story) {
       </li>
     `);
 }
-
-function submitNewStory(evt) {
+/**
+ * Gets data from submitStoryForm
+ * adds story to storyList
+ * Calls putStoriesOnPage() to display new Story on screen
+ */
+async function submitNewStory(evt) {
   evt.preventDefault();
   //gets form data
   //author-input, title-input, url-input
   const authorInput = $('#author-input').val();
   const titleInput = $('#title-input').val();
-  const urlInput = $('url-input').val();
+  const urlInput = $('#url-input').val();
   //calls add story
   const newStory = {
     author: authorInput,
     title: titleInput,
     url: urlInput
   }
-  storyList.stories.push(storyList.addStory(currentUser, newStory));
+  const storyInstance = await storyList.addStory(currentUser, newStory);
+  storyList.stories.unshift(storyInstance);
 
   //puts story on page
   putStoriesOnPage();
