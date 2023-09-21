@@ -35,6 +35,15 @@ function generateStoryMarkup(story) {
     `);
 }
 
+function submitNewStory(){
+  //gets form data
+  //calls add story
+  //puts story on page
+
+}
+//event listener for submitStoryForm
+
+
 /** Gets list of stories from server, generates their HTML, and puts on page. */
 
 function putStoriesOnPage() {

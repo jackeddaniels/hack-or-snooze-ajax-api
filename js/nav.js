@@ -15,6 +15,13 @@ function navAllStories(evt) {
 
 $body.on("click", "#nav-all", navAllStories);
 
+function navSubmitStoryClick(evt){
+  evt.preventDefault();
+  $submitStoryForm.toggleClass("hidden");
+}
+
+$navSubmit.on("click", navSubmitStoryClick)
+
 /** Show login/signup on click on "login" */
 
 function navLoginClick(evt) {

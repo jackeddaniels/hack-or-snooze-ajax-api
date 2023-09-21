@@ -77,16 +77,18 @@ class StoryList {
     console.log(user);
     // UNIMPLEMENTED: complete this function!
     //get token from user instance
-    const currUserToken = user.loginToken;
     //fetch request
+
     const body = {
-      'token': currUserToken,
-      'story': {
-        'author': newStory.author,
+      token: user.loginToken,
+      story: {
+        author: newStory.author,
         title: newStory.title,
         url: newStory.url
       }
     }
+    console.log(body);
+
     const response = await fetch(`${BASE_URL}/stories`, {
       method: "POST",
       body: JSON.stringify(body),
@@ -98,7 +100,15 @@ class StoryList {
     const {story} = storyData;
     // return new Story with
     // { storyId, title, author, url, username, createdAt }
-    return new Story({story})
+    return new Story(
+      {
+        storyId: story.storyId,
+        author: story.author,
+        title: story.title,
+        url: story.url,
+        username: story.username,
+        createdAt: story.createdAt
+      })
   }
 }
 
