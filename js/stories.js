@@ -35,14 +35,26 @@ function generateStoryMarkup(story) {
     `);
 }
 
-function submitNewStory() {
+function submitNewStory(evt) {
+  evt.preventDefault();
   //gets form data
+  //author-input, title-input, url-input
+  const authorInput = $('#author-input').val();
+  const titleInput = $('#title-input').val();
+  const urlInput = $('url-input').val();
   //calls add story
-  //puts story on page
+  const newStory = {
+    author: authorInput,
+    title: titleInput,
+    url: urlInput
+  }
+  storyList.stories.push(storyList.addStory(currentUser, newStory));
 
+  //puts story on page
+  putStoriesOnPage();
 }
 //event listener for submitStoryForm
-
+$submitStoryForm.on('submit', submitNewStory);
 
 /** Gets list of stories from server, generates their HTML, and puts on page. */
 
