@@ -51,7 +51,7 @@ async function submitNewStory(evt) {
     author: authorInput,
     title: titleInput,
     url: urlInput
-  }
+  };
   const storyInstance = await storyList.addStory(currentUser, newStory);
   storyList.stories.unshift(storyInstance);
 
