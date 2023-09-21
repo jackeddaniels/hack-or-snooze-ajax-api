@@ -26,7 +26,6 @@ class Story {
   getHostName() {
     const url = new URL(this.url);
 
-
     return url.hostname;
   }
 }
@@ -236,4 +235,16 @@ class User {
       return null;
     }
   }
+
+  /**
+   * takes a story instance and adds to user's favorites
+   * send POST update to API
+   */
+  async addFavorite(story) {
+    //add
+    this.favorites.unshift(story);
+
+  }
+
+  //method for un-favoriting needed
 }

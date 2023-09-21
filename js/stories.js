@@ -54,9 +54,9 @@ async function submitNewStory(evt) {
   };
   const storyInstance = await storyList.addStory(currentUser, newStory);
   storyList.stories.unshift(storyInstance);
-
-  //puts story on page
-  putStoriesOnPage();
+  //get story markup for our instance
+  //prepend story to a
+  $allStoriesList.prepend(generateStoryMarkup(storyInstance));
 }
 //event listener for submitStoryForm
 $submitStoryForm.on('submit', submitNewStory);
