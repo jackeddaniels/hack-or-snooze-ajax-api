@@ -25,6 +25,7 @@ function generateStoryMarkup(story) {
   const hostName = story.getHostName();
   return $(`
       <li id="${story.storyId}">
+        <button class="favorite-story">(Un)Favorite</button>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -34,6 +35,7 @@ function generateStoryMarkup(story) {
       </li>
     `);
 }
+
 /**
  * Gets data from submitStoryForm
  * adds story to storyList
@@ -85,5 +87,20 @@ function putFavoriteStoriesOnPage() {
     const $story = generateStoryMarkup(story);
     $allStoriesList.append($story);
   }
-  $allStoriesList.show();
 }
+
+//$allStoriesList.on('click', '.favorite-story', console.log(evt));
+
+function handleFavoriteUnfavorite(evt){
+  evt.preventDefault();
+  //Use jquery + css selectors to select the parent li element
+  $(evt.target).closest('li');
+  //and get the id that it stores
+  //check if that id is in userFavorites (currentUser.favorites.contains(id))
+    //if it is: delete it
+    //if it isn't: add to favorites
+  console.log(evt.target)
+}
+
+//TODO: funciton to handle
+$allStoriesList.on('click', '.favorite-story', handleFavoriteUnfavorite);
