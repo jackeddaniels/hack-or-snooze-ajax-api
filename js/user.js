@@ -110,6 +110,7 @@ function saveUserCredentialsInLocalStorage() {
 function updateUIOnUserLogin() {
   console.debug("updateUIOnUserLogin");
 
+  //how can we not do this again here.
   putStoriesOnPage();
   updateNavOnLogin();
 }
