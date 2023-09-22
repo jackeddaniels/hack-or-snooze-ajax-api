@@ -91,12 +91,13 @@ function putFavoriteStoriesOnPage() {
 
 //$allStoriesList.on('click', '.favorite-story', console.log(evt));
 
-function handleFavoriteUnfavorite(evt){
+async function handleFavoriteUnfavorite(evt){
   evt.preventDefault();
   //Use jquery + css selectors to select the parent li element
-  $(evt.target).closest('li');
   //and get the id that it stores
+  const clickedStoryId = $(evt.target).closest('li').attr('id');
   //check if that id is in userFavorites (currentUser.favorites.contains(id))
+  console.log('fav/unfav=', await Story.getStoryId(clickedStoryId));
     //if it is: delete it
     //if it isn't: add to favorites
   console.log(evt.target)

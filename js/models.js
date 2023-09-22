@@ -28,6 +28,14 @@ class Story {
 
     return url.hostname;
   }
+
+  static async getStoryId(storyId) {
+    //https://hack-or-snooze-v3.herokuapp.com/stories/storyId
+    const response = await fetch(`${BASE_URL}/stories/${storyId}`, {
+      method: "GET",
+    });
+    return await response.json();
+  }
 }
 
 
