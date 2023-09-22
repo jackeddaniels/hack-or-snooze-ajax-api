@@ -24,9 +24,8 @@ class Story {
   /** Parses hostname out of URL and returns it. */
 
   getHostName() {
-    const url = new URL(this.url);
 
-    return url.hostname;
+    return new URL(this.url).hostname;
   }
 
   static async getStoryId(storyId) {
@@ -265,14 +264,7 @@ class User {
 
   /**Removes story from the favorite list and updates API */
   async deleteFavorite(story) {
-    //TODO: find story in favorites, remove
-    let index;
-    for (let i = 0; i < this.favorites.length; i++) {
-      if (this.favorites[i].storyId === story.storyId) {
-        index = i;
-      }
-    }
-    this.favorites.splice(index, 1);
+    this.favorites = this.favorites.filter((favorite) => favorite.storyId !== story.storyId);
 
     const response = await fetch(`${BASE_URL}/users/${this.username}/favorites/${story.storyId}`, {
       method: "DELETE",
