@@ -45,7 +45,7 @@ function generateStoryMarkup(story) {
  * else, returns unfilled balloon
  */
 function getFavoriteIconHtmlClass(story, user){
-  //if the user isn't logged in 
+  //if the user isn't logged in
   if(user === undefined){
     return 'hidden'
   }
@@ -120,7 +120,7 @@ async function handleFavoriteUnfavorite(evt) {
   const clickedStoryId = $favoriteButton.closest('li').attr('id');
   //check if that id is in userFavorites (currentUser.favorites.contains(id))
   const story = (await Story.getStoryId(clickedStoryId));
-  //herewe can use  the evt to see if its filled and then call that way
+  //here we can use  the evt to see if its filled and then call that way
 
 
   if ($favoriteButton.hasClass('bi-balloon-heart-fill')) {
