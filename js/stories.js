@@ -3,6 +3,7 @@
 // This is the global list of the stories, an instance of StoryList
 let storyList;
 
+
 /** Get and show stories when site first loads. */
 
 async function getAndShowStoriesOnStart() {
@@ -25,7 +26,7 @@ function generateStoryMarkup(story) {
   const hostName = story.getHostName();
   return $(`
       <li id="${story.storyId}">
-        <button class="favorite-story">(Un)Favorite</button>
+        <span class="favorite-story bi bi-balloon-heart"></span>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -97,11 +98,23 @@ async function handleFavoriteUnfavorite(evt){
   //and get the id that it stores
   const clickedStoryId = $(evt.target).closest('li').attr('id');
   //check if that id is in userFavorites (currentUser.favorites.contains(id))
-  console.log('fav/unfav=', await Story.getStoryId(clickedStoryId));
-    //if it is: delete it
-    //if it isn't: add to favorites
-  console.log(evt.target)
+  const story = (await Story.getStoryId(clickedStoryId));
+
+  for(let i = 0; i < currentUser.favorites.length; i++){
+    if(currentUser.favorites[i].storyId === story.storyId){
+      $(evt.target).toggleClass('bi-balloon-heart-fill')
+      $(evt.target).toggleClass('bi-balloon-heart')
+
+      currentUser.deleteFavorite(story);
+      return;
+    }
+  }
+
+  $(evt.target).toggleClass('bi-balloon-heart-fill')
+  $(evt.target).toggleClass('bi-balloon-heart')
+
+  currentUser.addFavorite(story);
 }
 
-//TODO: funciton to handle
+
 $allStoriesList.on('click', '.favorite-story', handleFavoriteUnfavorite);

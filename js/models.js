@@ -34,7 +34,10 @@ class Story {
     const response = await fetch(`${BASE_URL}/stories/${storyId}`, {
       method: "GET",
     });
-    return await response.json();
+    const retrievedStory = await response.json();
+    const {story}=retrievedStory;
+
+    return new Story(story);
   }
 }
 
