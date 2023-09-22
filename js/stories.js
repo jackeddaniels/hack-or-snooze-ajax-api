@@ -24,9 +24,11 @@ function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
 
   const hostName = story.getHostName();
+  //check if is favorite, if is favorite, add -fill
+  const favoriteIconHtmlClass = getFavoriteIconHtmlClass(story, currentUser);
   return $(`
       <li id="${story.storyId}">
-        <span class="favorite-story bi bi-balloon-heart"></span>
+        <span class="favorite-story ${favoriteIconHtmlClass}"></span>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -36,6 +38,24 @@ function generateStoryMarkup(story) {
       </li>
     `);
 }
+
+/**Takes in story instance and user
+ * If user is undefined, returns hidden so buttons don't show
+ * if user logged in, if the story is in their favorites return filled balloon
+ * else, returns unfilled balloon
+ */
+function getFavoriteIconHtmlClass(story, user){
+  //if the user isn't logged in 
+  if(user === undefined){
+    return 'hidden'
+  }
+  if(user.checkIfFavorite(story)){
+    return 'bi bi-balloon-heart-fill';
+  } else {
+    return 'bi bi-balloon-heart'
+  }
+}
+//f
 
 /**
  * Gets data from submitStoryForm
@@ -92,28 +112,26 @@ function putFavoriteStoriesOnPage() {
 
 //$allStoriesList.on('click', '.favorite-story', console.log(evt));
 
-async function handleFavoriteUnfavorite(evt){
+async function handleFavoriteUnfavorite(evt) {
   evt.preventDefault();
   //Use jquery + css selectors to select the parent li element
   //and get the id that it stores
-  const clickedStoryId = $(evt.target).closest('li').attr('id');
+  const $favoriteButton = $(evt.target);
+  const clickedStoryId = $favoriteButton.closest('li').attr('id');
   //check if that id is in userFavorites (currentUser.favorites.contains(id))
   const story = (await Story.getStoryId(clickedStoryId));
+  //herewe can use  the evt to see if its filled and then call that way
 
-  for(let i = 0; i < currentUser.favorites.length; i++){
-    if(currentUser.favorites[i].storyId === story.storyId){
-      $(evt.target).toggleClass('bi-balloon-heart-fill')
-      $(evt.target).toggleClass('bi-balloon-heart')
 
-      currentUser.deleteFavorite(story);
-      return;
-    }
+  if ($favoriteButton.hasClass('bi-balloon-heart-fill')) {
+    currentUser.deleteFavorite(story);
+    $favoriteButton.toggleClass('bi-balloon-heart-fill bi-balloon-heart');
+  } else {
+    currentUser.addFavorite(story);
+    $favoriteButton.toggleClass('bi-balloon-heart-fill bi-balloon-heart');
+
+
   }
-
-  $(evt.target).toggleClass('bi-balloon-heart-fill')
-  $(evt.target).toggleClass('bi-balloon-heart')
-
-  currentUser.addFavorite(story);
 }
 
 

@@ -245,13 +245,25 @@ class User {
       return null;
     }
   }
+  /**
+   * Take in a story instance
+   * Checks if that story is in the users favorites
+   * returns true/false
+   */
+  checkIfFavorite(story){
+    const isFavorite = this.favorites.filter((favorite) => favorite.storyId === story.storyId);
+    if(isFavorite.length === 1){
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   /**
    * takes a story instance and adds to user's favorites
    * send POST update to API
    */
   async addFavorite(story) {
-    //add
     this.favorites.unshift(story);
     const response = await fetch(`${BASE_URL}/users/${this.username}/favorites/${story.storyId}`, {
       method: "POST",
