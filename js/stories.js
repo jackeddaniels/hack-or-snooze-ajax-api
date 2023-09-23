@@ -3,7 +3,6 @@
 // This is the global list of the stories, an instance of StoryList
 let storyList;
 
-
 /** Get and show stories when site first loads. */
 
 async function getAndShowStoriesOnStart() {
@@ -16,6 +15,8 @@ async function getAndShowStoriesOnStart() {
 /**
  * A render method to render HTML for an individual Story instance
  * - story: an instance of Story
+ *
+ *
  *
  * Returns the markup for the story.
  */
@@ -44,15 +45,16 @@ function generateStoryMarkup(story) {
  * if user logged in, if the story is in their favorites return filled balloon
  * else, returns unfilled balloon
  */
-function getFavoriteIconHtmlClass(story, user){
+//TODO: Make ternary for user w/ markup
+function getFavoriteIconHtmlClass(story, user) {
   //if the user isn't logged in
-  if(user === undefined){
-    return 'hidden'
+  if (user === undefined) {
+    return "hidden";
   }
-  if(user.checkIfFavorite(story)){
-    return 'bi bi-balloon-heart-fill';
+  if (user.checkIfFavorite(story)) {
+    return "bi bi-balloon-heart-fill";
   } else {
-    return 'bi bi-balloon-heart'
+    return "bi bi-balloon-heart";
   }
 }
 //f
@@ -66,14 +68,14 @@ async function submitNewStory(evt) {
   evt.preventDefault();
   //gets form data
   //author-input, title-input, url-input
-  const authorInput = $('#author-input').val();
-  const titleInput = $('#title-input').val();
-  const urlInput = $('#url-input').val();
+  const authorInput = $("#author-input").val();
+  const titleInput = $("#title-input").val();
+  const urlInput = $("#url-input").val();
   //calls add story
   const newStory = {
     author: authorInput,
     title: titleInput,
-    url: urlInput
+    url: urlInput,
   };
   const storyInstance = await storyList.addStory(currentUser, newStory);
   storyList.stories.unshift(storyInstance);
@@ -82,7 +84,7 @@ async function submitNewStory(evt) {
   $allStoriesList.prepend(generateStoryMarkup(storyInstance));
 }
 //event listener for submitStoryForm
-$submitStoryForm.on('submit', submitNewStory);
+$submitStoryForm.on("submit", submitNewStory);
 
 /** Gets list of stories from server, generates their HTML, and puts on page. */
 
@@ -117,22 +119,18 @@ async function handleFavoriteUnfavorite(evt) {
   //Use jquery + css selectors to select the parent li element
   //and get the id that it stores
   const $favoriteButton = $(evt.target);
-  const clickedStoryId = $favoriteButton.closest('li').attr('id');
+  const clickedStoryId = $favoriteButton.closest("li").attr("id");
   //check if that id is in userFavorites (currentUser.favorites.contains(id))
-  const story = (await Story.getStoryId(clickedStoryId));
+  const story = await Story.getStoryId(clickedStoryId);
   //here we can use  the evt to see if its filled and then call that way
 
-
-  if ($favoriteButton.hasClass('bi-balloon-heart-fill')) {
+  if ($favoriteButton.hasClass("bi-balloon-heart-fill")) {
     currentUser.deleteFavorite(story);
-    $favoriteButton.toggleClass('bi-balloon-heart-fill bi-balloon-heart');
+    $favoriteButton.toggleClass("bi-balloon-heart-fill bi-balloon-heart");
   } else {
     currentUser.addFavorite(story);
-    $favoriteButton.toggleClass('bi-balloon-heart-fill bi-balloon-heart');
-
-
+    $favoriteButton.toggleClass("bi-balloon-heart-fill bi-balloon-heart");
   }
 }
 
-
-$allStoriesList.on('click', '.favorite-story', handleFavoriteUnfavorite);
+$allStoriesList.on("click", ".favorite-story", handleFavoriteUnfavorite);

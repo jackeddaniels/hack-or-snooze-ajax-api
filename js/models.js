@@ -7,7 +7,6 @@ const BASE_URL = "https://hack-or-snooze-v3.herokuapp.com";
  */
 
 class Story {
-
   /** Make instance of Story from data object about story:
    *   - {title, author, url, username, storyId, createdAt}
    */
@@ -24,7 +23,6 @@ class Story {
   /** Parses hostname out of URL and returns it. */
 
   getHostName() {
-
     return new URL(this.url).hostname;
   }
 
@@ -34,12 +32,11 @@ class Story {
       method: "GET",
     });
     const retrievedStory = await response.json();
-    const {story}=retrievedStory;
+    const { story } = retrievedStory;
 
     return new Story(story);
   }
 }
-
 
 /******************************************************************************
  * List of Story instances: used by UI to show story lists in DOM.
@@ -71,7 +68,7 @@ class StoryList {
     const storiesData = await response.json();
 
     // turn plain old story objects from API into instances of Story class
-    const stories = storiesData.stories.map(story => new Story(story));
+    const stories = storiesData.stories.map((story) => new Story(story));
 
     // build an instance of our own class using the new array of stories
     return new StoryList(stories);
@@ -95,8 +92,8 @@ class StoryList {
       story: {
         author: newStory.author,
         title: newStory.title,
-        url: newStory.url
-      }
+        url: newStory.url,
+      },
     };
     console.log(body);
 
@@ -105,24 +102,22 @@ class StoryList {
       body: JSON.stringify(body),
       headers: {
         "content-type": "application/json",
-      }
+      },
     });
     const storyData = await response.json();
     const { story } = storyData;
     // return new Story with
     // { storyId, title, author, url, username, createdAt }
-    return new Story(
-      {
-        storyId: story.storyId,
-        author: story.author,
-        title: story.title,
-        url: story.url,
-        username: story.username,
-        createdAt: story.createdAt
-      });
+    return new Story({
+      storyId: story.storyId,
+      author: story.author,
+      title: story.title,
+      url: story.url,
+      username: story.username,
+      createdAt: story.createdAt,
+    });
   }
 }
-
 
 /******************************************************************************
  * User: a user in the system (only used to represent the current user)
@@ -134,21 +129,17 @@ class User {
    *   - token
    */
 
-  constructor({
-    username,
-    name,
-    createdAt,
-    favorites = [],
-    ownStories = []
-  },
-    token) {
+  constructor(
+    { username, name, createdAt, favorites = [], ownStories = [] },
+    token
+  ) {
     this.username = username;
     this.name = name;
     this.createdAt = createdAt;
 
     // instantiate Story instances for the user's favorites and ownStories
-    this.favorites = favorites.map(s => new Story(s));
-    this.ownStories = ownStories.map(s => new Story(s));
+    this.favorites = favorites.map((s) => new Story(s));
+    this.ownStories = ownStories.map((s) => new Story(s));
 
     // store the login token on the user so it's easy to find for API calls.
     this.loginToken = token;
@@ -167,7 +158,7 @@ class User {
       body: JSON.stringify({ user: { username, password, name } }),
       headers: {
         "content-type": "application/json",
-      }
+      },
     });
     const userData = await response.json();
     const { user } = userData;
@@ -178,7 +169,7 @@ class User {
         name: user.name,
         createdAt: user.createdAt,
         favorites: user.favorites,
-        ownStories: user.stories
+        ownStories: user.stories,
       },
       userData.token
     );
@@ -196,7 +187,7 @@ class User {
       body: JSON.stringify({ user: { username, password } }),
       headers: {
         "content-type": "application/json",
-      }
+      },
     });
     const userData = await response.json();
     const { user } = userData;
@@ -207,7 +198,7 @@ class User {
         name: user.name,
         createdAt: user.createdAt,
         favorites: user.favorites,
-        ownStories: user.stories
+        ownStories: user.stories,
       },
       userData.token
     );
@@ -224,7 +215,7 @@ class User {
       const response = await fetch(
         `${BASE_URL}/users/${username}?${tokenParams}`,
         {
-          method: "GET"
+          method: "GET",
         }
       );
       const userData = await response.json();
@@ -236,7 +227,7 @@ class User {
           name: user.name,
           createdAt: user.createdAt,
           favorites: user.favorites,
-          ownStories: user.stories
+          ownStories: user.stories,
         },
         token
       );
@@ -250,9 +241,12 @@ class User {
    * Checks if that story is in the users favorites
    * returns true/false
    */
-  checkIfFavorite(story){
-    const isFavorite = this.favorites.filter((favorite) => favorite.storyId === story.storyId);
-    if(isFavorite.length === 1){
+  checkIfFavorite(story) {
+    const isFavorite = this.favorites.filter(
+      (favorite) => favorite.storyId === story.storyId
+    );
+    //TODO: return isFavorite.length === 1
+    if (isFavorite.length === 1) {
       return true;
     } else {
       return false;
@@ -265,25 +259,34 @@ class User {
    */
   async addFavorite(story) {
     this.favorites.unshift(story);
-    const response = await fetch(`${BASE_URL}/users/${this.username}/favorites/${story.storyId}`, {
-      method: "POST",
-      body: JSON.stringify({ "token": this.loginToken }),
-      headers: {
-        "content-type": "application/json",
+    const response = await fetch(
+      `${BASE_URL}/users/${this.username}/favorites/${story.storyId}`,
+      {
+        method: "POST",
+        body: JSON.stringify({ token: this.loginToken }),
+        headers: {
+          "content-type": "application/json",
+        },
       }
-    });
+    );
   }
-
+  //TODO: third function for fetch call that recieves method + story
+  //_functionName (this indicates it's only supposed to be used within the class)
   /**Removes story from the favorite list and updates API */
   async deleteFavorite(story) {
-    this.favorites = this.favorites.filter((favorite) => favorite.storyId !== story.storyId);
+    this.favorites = this.favorites.filter(
+      (favorite) => favorite.storyId !== story.storyId
+    );
 
-    const response = await fetch(`${BASE_URL}/users/${this.username}/favorites/${story.storyId}`, {
-      method: "DELETE",
-      body: JSON.stringify({ "token": this.loginToken }),
-      headers: {
-        "content-type": "application/json",
+    const response = await fetch(
+      `${BASE_URL}/users/${this.username}/favorites/${story.storyId}`,
+      {
+        method: "DELETE",
+        body: JSON.stringify({ token: this.loginToken }),
+        headers: {
+          "content-type": "application/json",
+        },
       }
-    });
+    );
   }
 }
